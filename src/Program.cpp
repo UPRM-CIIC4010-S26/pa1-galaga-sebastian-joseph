@@ -99,7 +99,7 @@ void Program::Draw() {
 void Program::ManageEnemyRespawns() {
     delay = std::max(delay - 1, 0);
 
-    respawnCooldown -= 1;
+    respawnCooldown -= 1 + (score / 2000);
     if (respawnCooldown <= 0) {
         respawnCooldown = 1080;
         for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) {
@@ -175,7 +175,7 @@ void Program::KeyInputs() {
     if (!startup && !paused && !gameOver && pauseFrames <= 0) player->keyInputs();
 
     if (IsKeyPressed('K')) {
-        score += 100;
+        score += 500;
     }
    
 }
