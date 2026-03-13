@@ -18,6 +18,8 @@ class Program {
         int count = 0;
         int delay = 0;
         int lives = 3;
+        int score = 0;
+        int nextLifeScore = 1000;
         int pauseFrames = 0;
 
         bool startup = true;
