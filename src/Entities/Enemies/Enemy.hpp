@@ -16,6 +16,7 @@ class Enemy {
         
     public:
         int health = 1;
+        int scoreValue = 0;
         std::pair<float, float> position;
         HitBox hitBox;
 
@@ -38,13 +39,15 @@ class Enemy {
         void frameChange() {
             frameCooldown--;
 
-             if (frameCooldown <= 0) {
+            if (frameCooldown <= 0) {
                 frame = !frame;
                 frameCooldown = 30;
-             }
+            }
         }
 
-        static void ManageEnemies(HitBox target) {
+        static int ManageEnemies(HitBox target) {
+            int points = 0;
+
             for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) {
                 p.first.first += (p.first.first == 0) ? 0 : direction;
                 if (p.second) {
@@ -58,9 +61,11 @@ class Enemy {
                     }
 
                     if (p.second->health <= 0) {
+                        points += p.second->scoreValue;
                         Animation::animations.push_back(
                             Animation(p.second->position.first, p.second->position.second, 155, 0, 33, 33, 30, 30, 4, ImageManager::SpriteSheet)
                         );
+                        delete p.second;
                         p.second = nullptr;
                     }
                 }
@@ -69,6 +74,9 @@ class Enemy {
             for (int i = 0; i < Enemy::enemies.size(); i++) {
                 if ((Enemy::enemies[i].second && Enemy::enemies[i].second->position.first <= -30) || 
                     (!Enemy::enemies[i].second && Enemy::enemies[i].first.first == 0 && Enemy::enemies[i].first.second == 0)) {
+                    if (Enemy::enemies[i].second) {
+                        delete Enemy::enemies[i].second;
+                    }
                     Enemy::enemies.erase(Enemy::enemies.begin() + i);
                 }
             }
@@ -79,5 +87,7 @@ class Enemy {
                 directionChange = 0;
                 direction *= -1;
             }
+
+            return points;
         }
 };
