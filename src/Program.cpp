@@ -66,6 +66,10 @@ void Program::Update() {
         if (lives <= 0 && pauseFrames <= 0) gameOver = true;
         Projectile::CleanProjectiles();
         Projectile::ProjectileCollision();
+        if (score >= nextLifeScore && lives < 5) {
+            lives++;
+            nextLifeScore += 1000;
+        }
     }
 }
 
