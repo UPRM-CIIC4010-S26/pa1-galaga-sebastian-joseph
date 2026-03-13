@@ -169,6 +169,10 @@ void Program::KeyInputs() {
     }
 
     if (!startup && !paused && !gameOver && pauseFrames <= 0) player->keyInputs();
+
+    if (IsKeyPressed('K')) {
+        score += 100;
+    }
    
 }
 
