@@ -66,9 +66,12 @@ void Program::Update() {
         if (lives <= 0 && pauseFrames <= 0) gameOver = true;
         Projectile::CleanProjectiles();
         Projectile::ProjectileCollision();
-        if (score >= nextLifeScore && lives < 5) {
-            lives++;
-            nextLifeScore += 1000;
+        {
+            int milestone = score / 1000;
+            while (scoreLifeMilestones < milestone) {
+                scoreLifeMilestones++;
+                if (lives < 5) lives++;
+            }
         }
     }
 }
@@ -201,5 +204,7 @@ void Program::Reset() {
     count = 0;
     delay = 0;
     lives = 3;
+    score = 0;
+    scoreLifeMilestones = 0;
     Program();
 } 
